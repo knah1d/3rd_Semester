@@ -78,7 +78,7 @@ int main() {
     string encodedText = encodeData(inputText, huffmanCodes);
 
     cout << "Character Codes:" << endl;
-    for (const auto& code : huffmanCodes) {
+    for (const auto &code : huffmanCodes) {
         cout << "'" << code.first << "': " << code.second << endl;
     }
 
