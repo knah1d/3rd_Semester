@@ -1,73 +1,65 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include <string.h>
 
-// Define the states
-#define Q0 0
-#define Q1 1
-#define Q2 2
-#define Q3 3
+#define MAX_STATES 10
+#define MAX_ALPHABET 2
 
-// Define the alphabet
-#define ZERO '0'
-#define ONE '1'
+// Define the DFA transition function
+int dfa_transition[MAX_STATES][MAX_ALPHABET];
 
-// Define the transition function as a 2D array
-int delta[4][2] = {
-    {Q1, Q3}, // transitions from Q0
-    {Q0, Q2}, // transitions from Q1
-    {Q3, Q3}, // transitions from Q2
-    {Q3, Q3}  // transitions from Q3
-};
+// Function to check if the input string is accepted by the DFA
+bool is_string_accepted(char input_string[], int start_state, int final_state) {
+    int current_state = start_state;
 
-// Define the initial state
-int q0 = Q0;
-
-// Define the final state(s) as an array
-int F[1] = {Q2};
-
-// Check if a state is final or not
-int is_final(int q) {
-    for (int i = 0; i < 1; i++) {
-        if (F[i] == q) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-// Simulate the DFA on an input string
-void simulate(char* input) {
-    // Initialize the current state to the initial state
-    int q = q0;
-    // Loop through each symbol of the input string
-    for (int i = 0; i < strlen(input); i++) {
-        char c = input[i];
-        // Check if the symbol is valid or not
-        if (c == ZERO || c == ONE) {
-            // Update the current state using the transition function
-            q = delta[q][c - ZERO];
+    printf("Path of Transition: ");
+    for (int i = 0; input_string[i] != '\0'; i++) {
+        int input = input_string[i] - '0'; // Assuming the input alphabet is 0 and 1
+        printf("%d -> ", current_state);
+        if (input >= 0 && input < MAX_ALPHABET) {
+            current_state = dfa_transition[current_state][input];
         } else {
-            // Invalid symbol, reject the input
-            printf("Invalid input: %s\n", input);
-            return;
+            printf("Invalid input character %c\n", input_string[i]);
+            return false;
         }
     }
-    // Check if the current state is final or not
-    if (is_final(q)) {
-        // Accept the input
-        printf("Accepted: %s\n", input);
-    } else {
-        // Reject the input
-        printf("Rejected: %s\n", input);
-    }
+    printf("%d\n", current_state);
+
+    // Check if the final state is an accepting state.
+    return current_state == final_state;
 }
 
-// Test some inputs
 int main() {
-    simulate("001");   // Accepted
-    simulate("010");   // Rejected
-    simulate("10010"); // Accepted
-    simulate("10101"); // Rejected
-    simulate("0110");  // Rejected
-    simulate("abc");   // Invalid input
+    int num_states, start_state, final_state;
+    char input_string[100];
+
+    printf("Enter the number of states: ");
+    scanf("%d", &num_states);
+
+    printf("Enter the start state: ");
+    scanf("%d", &start_state);
+
+    printf("Enter the final state: ");
+    scanf("%d", &final_state);
+
+    // Input the transition function based on user-defined states and alphabet.
+    printf("Enter the transition function:\n");
+    for (int i = 0; i < num_states; i++) {
+        for (int j = 0; j < MAX_ALPHABET; j++) {
+            printf("Transition from state %d for input %d: ", i, j);
+            scanf("%d", &dfa_transition[i][j]);
+        }
+    }
+
+    printf("Enter the input string: ");
+    scanf("%s", input_string);
+
+    // Check if the input string is accepted by the DFA
+    if (is_string_accepted(input_string, start_state, final_state)) {
+        printf("Accepted\n");
+    } else {
+        printf("Rejected\n");
+    }
+
+    return 0;
 }
