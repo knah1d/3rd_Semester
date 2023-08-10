@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -132,7 +131,6 @@ int main() {
         printf("Accepted\n");
     } else {
         printf("Rejected\n");
->>>>>>> 5329502a4564f9befa0f1a6956bd7b18e825763c
     }
 
     return 0;
