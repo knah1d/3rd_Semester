@@ -34,8 +34,7 @@ public class CollectionTest {
         }
     }
 
-    private void removeColors(
-            Collection< String> collection1, Collection< String> collection2) {
+    private void removeColors(Collection< String> collection1, Collection< String> collection2) {
         Iterator< String> iterator = collection1.iterator();
 
         while (iterator.hasNext()) {
