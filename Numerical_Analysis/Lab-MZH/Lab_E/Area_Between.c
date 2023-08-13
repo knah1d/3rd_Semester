@@ -24,8 +24,13 @@ double bisection(double a, double b, int n) {
     }
 }
 
-double simpson(double a, double b, int n) {
+void trapezoidal(double h, double Sum_O, double Sum_E, double Sum_X) {
+    double I = h*(Sum_X+2*(Sum_O+Sum_E))/2;
+    
+    printf("Area(Trapezoidal) = %lf\n", fabs(I));
+}
 
+double simpson(double a, double b, int n) {
 
     if(n%2!=0) n++;
     double x[n+1], y[n+1], I;
@@ -47,14 +52,16 @@ double simpson(double a, double b, int n) {
     }
 
     I = h*( Sum_X + 4*Sum_O + 2*Sum_E )/3;
+    trapezoidal(h, Sum_O, Sum_E, Sum_X);
     return I;
 }
 
 int main() {
     double a = 0, b = bisection(0.5, 1.25, 100);
-    printf("%lf\n", b);
+    printf("Root = %lf\n", b);
     int n = 10;
-    printf("%lf\n", fabs(simpson(a, b, n)));
+    printf("Area(Simpson's) = %lf\n", fabs(simpson(a, b, n)));
+  
     // double area1 = simpson(a, b, n, f);
     // double area2 = simpson(a, b, n, g);
     // printf("%lf\n", fabs(area1-area2));
