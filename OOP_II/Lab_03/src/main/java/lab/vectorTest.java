@@ -15,5 +15,5 @@ public class VectorTest {
 		
 	      printVector( vector ); // print vector
 		      
-
+                   }
 }

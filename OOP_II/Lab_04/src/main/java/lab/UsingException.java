@@ -24,8 +24,7 @@ public class UsingException {
         } // end try
         catch (Exception exception) // catch exception thrown in try
         {
-            System.err.println(
-                    "Exception handled in method throwException");
+            System.err.println("Exception handled in method throwException");
             throw exception; // rethrow for further processing
 
             // any code here would not be reached
