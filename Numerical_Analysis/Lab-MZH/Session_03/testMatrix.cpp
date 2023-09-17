@@ -66,12 +66,14 @@ int main() {
     int n;
     cout<<"Enter order of the squre matrix: ";
     cin>>n;
+    cout<<"Enter elements:"<<endl;
     double matrix[MAX_SIZE][MAX_SIZE];
     for(int i=0; i<n; i++) {
         for(int j=0; j<n; j++) {
             cin>>matrix[i][j];
         }
     }
+    cout<<endl;
     cout << "Given Matrix:" << endl;
 
     printMatrix(matrix, n);
