@@ -1,14 +1,12 @@
 #include <iostream>
-#include <vector>
 using namespace std;
 
-// Function to print a matrix
-void printMatrix(const vector<vector<double>>& matrix) {
-    int rows = matrix.size();
-    int cols = matrix[0].size();
+const int MAX_SIZE = 100; // Maximum matrix size
 
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
+// Function to print a matrix
+void printMatrix(double matrix[MAX_SIZE][MAX_SIZE], int n) {
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
             cout << matrix[i][j] << "   ";
         }
         cout << endl;
@@ -16,11 +14,9 @@ void printMatrix(const vector<vector<double>>& matrix) {
 }
 
 // Function to calculate the inverse of a matrix without pivot
-vector<vector<double>> matrixInverse(const vector<vector<double>>& matrix) {
-    int n = matrix.size();
-
+void matrixInverse(double matrix[MAX_SIZE][MAX_SIZE], int n) {
     // Create an augmented matrix [matrix | I]
-    vector<vector<double>> augmentedMatrix(n, vector<double>(2 * n, 0));
+    double augmentedMatrix[MAX_SIZE][2 * MAX_SIZE] = {0};
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
             augmentedMatrix[i][j] = matrix[i][j];
@@ -50,24 +46,43 @@ vector<vector<double>> matrixInverse(const vector<vector<double>>& matrix) {
     }
 
     // Extract the right half of the augmented matrix, which is the inverse
-    vector<vector<double>> inverse(n, vector<double>(n, 0));
+    double inverse[MAX_SIZE][MAX_SIZE] = {0};
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
             inverse[i][j] = augmentedMatrix[i][j + n];
         }
     }
 
-    return inverse;
+    // Copy the inverse matrix back to the original matrix
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            matrix[i][j] = inverse[i][j];
+        }
+    }
 }
 
 int main() {
-    // Example usage
-    vector<vector<double>> matrix = {{4, 1, 1}, {2, 5, 2}, {1, 2, 4}};
+    
+    int n;
+    cout<<"Enter order of the squre matrix: ";
+    cin>>n;
+    cout<<"Enter elements:"<<endl;
+    double matrix[MAX_SIZE][MAX_SIZE];
+    for(int i=0; i<n; i++) {
+        for(int j=0; j<n; j++) {
+            cin>>matrix[i][j];
+        }
+    }
+    cout<<endl;
+    cout << "Given Matrix:" << endl;
 
-    vector<vector<double>> inverse = matrixInverse(matrix);
+    printMatrix(matrix, n);
+    cout<<endl;
+    
+    matrixInverse(matrix, n);
 
     cout << "Inverse of the matrix:" << endl;
-    printMatrix(inverse);
+    printMatrix(matrix, n);
 
     return 0;
 }
