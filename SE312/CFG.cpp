@@ -1,53 +1,97 @@
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 
-bool isPalindrome(string s) {
-    int i = 0, j = s.length() - 1;
-    while (i < j) {
-        if (s[i] != s[j]) {
-            return false;
-        }
-        i++;
-        j--;
+string input;
+int pos = 0;
+
+vector<string> leftmostPath;
+vector<string> rightmostPath;
+
+bool S();
+bool A();
+bool B();
+
+bool match(char c) {
+    if (pos < input.length() && input[pos] == c) {
+        pos++;
+        return true;
     }
+    return false;
+}
+
+void printPath(const vector<string>& path) {
+    for (const string& step : path) {
+        cout << step << endl;
+    }
+}
+
+bool S() {
+    int initial_pos = pos;
+    string derivationStep = "S -> ";
+    if (A() && match('1') && B()) {
+        derivationStep += "A1B";
+        leftmostPath.push_back(derivationStep);
+        rightmostPath.push_back(derivationStep);
+        return true;
+    }
+    pos = initial_pos;
+    return false;
+}
+
+bool A() {
+    int initial_pos = pos;
+    string derivationStep = "A -> ";
+    if (match('0') && A()) {
+        derivationStep += "0A";
+        leftmostPath.push_back(derivationStep);
+        rightmostPath.push_back(derivationStep);
+        return true;
+    }
+    pos = initial_pos;
+    derivationStep += "ε";
+    leftmostPath.push_back(derivationStep);
+    rightmostPath.push_back(derivationStep);
     return true;
 }
 
-void derivePalindrome(string s) {
-    int n = s.length();
-    int i = 0;
-
-    while (i < n) {
-        if (s[i] == '0') {
-            cout << "P -> 0" << endl;
-            i++;
-        } else if (s[i] == '1') {
-            cout << "P -> 1" << endl;
-            i++;
-        } else {
-            cout << "Not in this grammar" << endl;
-            return;
-        }
+bool B() {
+    int initial_pos = pos;
+    string derivationStep = "B -> ";
+    if (match('0') && B()) {
+        derivationStep += "0B";
+        leftmostPath.push_back(derivationStep);
+        rightmostPath.push_back(derivationStep);
+        return true;
     }
-
-    if (isPalindrome(s)) {
-        cout << "Derivation:" << endl;
-        for (int i = 0; i < n / 2; i++) {
-            cout << "P -> " << s[i] << "P" << s[i] << endl;
-        }
-        cout << "P => " << s << endl;
-    } else {
-        cout << "Not in this grammar" << endl;
+    pos = initial_pos;
+    if (match('1') && B()) {
+        derivationStep += "1B";
+        leftmostPath.push_back(derivationStep);
+        rightmostPath.push_back(derivationStep);
+        return true;
     }
+    pos = initial_pos;
+    derivationStep += "ε";
+    leftmostPath.push_back(derivationStep);
+    rightmostPath.push_back(derivationStep);
+    return true;
 }
 
 int main() {
-    string input;
     cout << "Enter a string: ";
     cin >> input;
 
-    derivePalindrome(input);
+    if (S() && pos == input.length()) {
+        cout << "Parsing successful." << endl;
+        cout << "Leftmost Derivation:" << endl;
+        printPath(leftmostPath);
+        cout << "Rightmost Derivation:" << endl;
+        printPath(rightmostPath);
+    } else {
+        cout << "Parsing failed." << endl;
+    }
 
     return 0;
 }
